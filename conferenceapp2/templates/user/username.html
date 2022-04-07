@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Check Availabilty</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6 mx-auto mt-4">
+                <form action="">
+                    <h1>Sign Up Form</h1>
+                    <div class="row">
+                        <div class="col-7">
+                            <label for="username">Check username</label>
+                            <input type="text" class="form-control" id="username" name="username">
+                        </div>
+                        <div class="col-5">
+                            <button class="btn btn-lg btn-primary mt-3 d-block mx-auto" id="check" type="button">Check username</button>
+                        </div>
+                    </div>
+                    <label for="email">Enter email</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                        <button class="btn btn-lg btn-success mt-3 d-block mx-auto" id="btnsubmit">Submit Form</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#check").click(function() {
+                var username = $('#username').val()
+                data2send = "username="+username
+
+                $.ajax({
+                    url:"/check/result",
+                    type: "get",
+                    data: data2send,
+                    success: function(msg) {
+                        if (msg=="Username is taken") {
+                            alert(msg)
+                            $('#btnsubmit').attr('disabled','disabled')
+                        } else{
+                            alert(msg)
+                            $("#btnsubmit").removeAttr('disabled')
+                        }
+                    },
+                    error: function(err) {}
+                })
+            })
+        })
+    </script>
+</body>
+</html>

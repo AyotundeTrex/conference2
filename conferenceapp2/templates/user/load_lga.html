@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Check Availabilty</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6 mx-auto mt-4">
+                <form action="">
+                    <h1>Select State</h1>
+                    <label for="state">Select State and LGA</label>
+                    <select name="state" id="state" class="form-control">
+                        <option value="">Choose State</option>
+                        {% for i in states %}
+                        <option value="{{i.state_id}}">{{i.state_name}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="lga">Select LGA</label>
+                    <div class="col" id="lga">
+
+                    </div>
+                    <button class="btn btn-lg btn-success mt-3 d-block mx-auto" id="btnsubmit">Submit Form</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script type="text/javascript">
+         $(document).ready(function() {
+             $("#state").change(function(){
+                 var stateid = $(this).val()
+                 var csrf = "{{csrf_token()}}"
+                 data2send = {"stateid":stateid, "csrf_token":csrf}
+
+                 $.ajax({
+                     url:"/demo/lga",
+                     data: data2send,
+                     type: 'post',
+                     success: function(msg) {
+                        $('#lga').html(msg)
+                     }
+                 })
+             })
+        })
+    </script>
+</body>
+</html>

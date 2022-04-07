@@ -1,0 +1,47 @@
+{% extends 'admin/layout.html' %}
+{% block pagecontent %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Breakout Sessions</h1>
+         
+      </div>
+
+      
+
+      <div style="text-align:right"><a href='/admin/addbreakout' class="btn btn-lg btn-success">Add Breakout</a></div>
+      
+
+      <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Image</th>
+      <th scope="col">Title</th>
+      <th scope="col">Level</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if break_deets %}
+    {% for b in break_deets %}
+    <tr>
+      <td>{{loop.index}}</td>
+      <th scope="row">
+        {% if b.break_picture %}
+        <img src="/static/assets/img/{{b.break_picture}}" alt="" width="200px">
+        {%else%}
+        <img src="{{url_for('static', filename=('assets/img/dom1.jpg'))}}" alt="" width="200px">
+        {%endif%}
+      </th>
+      <td>{{b.break_title}}</td>
+      <td>{{b.skillobj.skill_name}}</td>
+      <td><a href="/admin/breakout/delete/{{b.break_id}}" class="btn btn-sm btn-danger">Delete</a></td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+</main>
+
+{% endblock %}

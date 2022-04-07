@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Help a Brother</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8 mx-auto">
+                <form id="paymentForm">
+                    <h1 class="text-center">Help a Brother</h1>
+                    <p>You are about to make payment as follows:</p>
+                    <p><b>Fullname of Donor:</b> {{data.fullname}}</p>
+                    <p><b>Email of Donor:</b> {{data.email}}</p>
+                    <p><b>Reference No.:</b> {{data.ref}} <span style="color:red">Please keep this</span></p>
+                    <p><b>Donation Amount:</b> <span id="amount">{{data.amt}}</span></p>
+                    <div class="d-grid gap-2">
+                    <button class="btn btn-danger">Pay Now</button>
+                    </div>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <!-- JQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script type="text/javascript">
+        const paymentForm = document.getElementById('paymentForm');
+        paymentForm.addEventListener("submit", payWithPaystack, false);
+        function payWithPaystack(e) {
+        e.preventDefault();
+        let handler = PaystackPop.setup({
+            key: 'pk_test_25cce05b9401cd5df2a14b5df970fc028b124e7f', // Replace with your public key
+            email: '{{data.email}}',
+            amount: document.getElementById("amount").innerHTML * 100,
+            ref: '{{ data.ref }}', 
+            // label: "Optional string that replaces customer email"
+            onClose: function(){
+                alert('Window closed.');
+            },
+            callback: function(response){
+                let message = 'Payment complete! Reference: ' + response.reference;
+                let csrf = "{{csrf_token()}}"
+                data2send = {"stateid":stateid, "csrf_token":csrf}
+                alert(message);
+                console.log(response)
+            }
+        });
+        handler.openIframe();
+        }
+
+        var stateid = $(this).val()
+                 var csrf = "{{csrf_token()}}"
+                 data2send = {"stateid":stateid, "csrf_token":csrf}
+
+                 $.ajax({
+                     url:"/demo/lga",
+                     data: data2send,
+                     type: 'post',
+                     success: function(msg) {
+                        $('#lga').html(msg)
+                     }
+                 })
+    </script>
+</body>
+</html>

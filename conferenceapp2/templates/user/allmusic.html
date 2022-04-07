@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Post Comments</title>
+</head>
+<body>
+    {% for m in allmusic %}
+    <p>{{m.track_title}}</p>
+    <p>{{m.track_artist_name}}</p>
+    <img src="/static/assets/trackimg/{{m.track_image}}" alt="">
+    <audio controls>
+        <source src="/static/assets/tracks/{{m.track_mp3}}" type="audio/mp3">
+    </audio>
+    {% endfor %}
+</body>
+</html>

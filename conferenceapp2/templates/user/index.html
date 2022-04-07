@@ -1,0 +1,188 @@
+{% extends 'user/layout.html'%}
+{% block pagecontent %}
+
+ <header class="masthead">
+            <div class="container">
+                <div class="masthead-subheading">The Largest gathering of Software Developers in Africa</div>
+                <div class="masthead-heading text-uppercase">
+                    Lagos Distrupts
+                </div>
+                <a class="btn btn-primary btn-xl text-uppercase" href="{{ url_for('register')}}">Register</a>
+            </div>
+        </header>
+       
+        <!-- Services-->
+        <section class="page-section" id="login" style="background-color: #ffc80027;">
+            <div class="container">
+               <div class="row">
+                   <div class="col">
+                    {% set msg=get_flashed_messages()%}
+                    {% if msg %}
+                    <p class="alert alert-info">{{ msg[0] }}</p>
+                    {% endif %}
+                   </div>
+               </div>
+
+                <div class="row text-center"> 
+                    <h2 class="section-heading text-uppercase">LOGIN HERE</h2>
+                    <div class="col-md-8 offset-2">
+   
+<form action="{{ url_for('submit_login')}}" method="post">
+    <div class="row mb-2">
+
+        <div class="col">
+            {{ login.username(class_="form-control form-control-lg", placeholder="email address")}}
+            {% if login.username.errors%}
+            <span>{{ login.username.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="col">
+          {{ login.pwd(class_="form-control form-control-lg", placeholder="Enter your password")}}
+          {% if login.pwd.errors%}
+          <span>{{ login.pwd.errors }}</span>
+          {% endif %}
+        </div>
+        <div class="col d-grid">
+          {{ login.loginbtn(class_="btn btn-outline-warning")}}
+          {{ login.csrf_token() }}
+        </div>
+      </div> 
+</form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Portfolio Grid-->
+        <section class="page-section bg-light" id="portfolio">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">BREAK OUT SESSIONS</h2>
+                    <h3 class="section-subheading text-muted">A range of interesting topics relevant to the conference</h3>
+                </div>
+                <div class="row">
+                    {% if break_deets %}
+                    {% for b in break_deets %}
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+                        <!-- Portfolio item 4-->
+                        <div class="portfolio-item">
+                            <a href="#">
+                                {% if b.break_picture %}
+                                <img src="/static/assets/img/{{b.break_picture}}" alt="" class="img-fluid">
+                                {%else%}
+                                <img src="{{url_for('static', filename=('assets/img/dom1.jpg'))}}" alt="" class="img-fluid">
+                                {%endif%}
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">{{b.break_title}}</div>
+                                <div class="portfolio-caption-subheading text-muted">{{b.skillobj.skill_name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                   
+                  
+                </div>
+            </div>
+        </section>
+        <!-- About-->
+        <section class="page-section" id="hostels">
+            {# {{hostel_json}} #}
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Partner Hostels</h2>
+                    <h3 class="section-subheading text-muted">You can lodge at any of the following verified accomodation.</h3>
+                </div>
+                 <div class="card-group">
+                     {% set hostel_data = hostel_json.get('data') %}
+                     {% if hostel_data != None %}
+                     {% for h in hostel_data %}
+  <div class="card">
+    <img src="{{ h.pix }}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ h.name }}</h5>
+      <p class="card-text">{{ h.type}}</p>
+    </div>
+    <div class="card-footer text-center">
+      <button class="btn btn-sm btn-primary">View Details</button>
+    </div>
+  </div>
+  {% endfor %}
+  {%else%}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <strong>Our Partners are down</strong> 
+  </div>
+  
+  <script>
+    var alertList = document.querySelectorAll('.alert');
+    alertList.forEach(function (alert) {
+      new bootstrap.Alert(alert)
+    })
+  </script>
+  
+   {% endif %}
+</div>
+                
+            </div>
+        </section>
+        <!-- Team-->
+        <section class="page-section bg-light" id="speakers">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">SPEAKERS</h2>
+                    <h3 class="section-subheading text-muted">WE have amazing experts lined up for the conference</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="team-member">
+                            <img class="mx-auto rounded-circle" src="{{url_for('static', filename='assets/img/team/1.jpg') }}" alt="..." />
+                            <h4>Parveen Anand</h4>
+                            <p class="text-muted">Lead Designer</p>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="team-member">
+                            <img class="mx-auto rounded-circle" src="{{url_for('static', filename='assets/img/team/2.jpg') }}" alt="..." />
+                            <h4>Diana Petersen</h4>
+                            <p class="text-muted">Lead Marketer</p>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="team-member">
+                            <img class="mx-auto rounded-circle" src="{{url_for('static', filename='assets/img/team/3.jpg') }}" alt="..." />
+                            <h4>Larry Parker</h4>
+                            <p class="text-muted">Lead Developer</p>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        <!-- Modal -->
+
+  
+  </div>
+  
+  
+       
+      {% endblock %}
+        
+        
+        <!-- Bootstrap core JS-->
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+       
+    </body>
+</html>

@@ -1,0 +1,47 @@
+{% extends 'user/layout.html' %}
+{% block pagecontent %}
+<section class="page-section bg-light" style="min-height:90vh">
+    <div class="container-fluid">
+ <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div class="border-end bg-white" id="sidebar-wrapper">
+                 
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('userhome')}}">Dashboard</a>
+                     
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/user/editprofile">My Profile</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Payments</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('discussion')}}">Join Discussion</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('user_breakout')}}">Break Out Session</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('logout')}}">Log Out</a>
+                </div>
+            </div>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                
+                <!-- Page content-->
+                <div class="container-fluid">
+                    {% set msg=get_flashed_messages() %}
+                    {% if msg %}
+                    <p>{{ msg[0] }}</p>
+                    {% endif %}
+                    <h1 class="mt-4">Welcome to your Dashboard, {{ userdeets.user_fname }}</h1>
+                    <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+                     <p>{{ userdeets }}</p>
+                </div>
+
+                <a href="{{url_for('edit_profile')}}">Edit Profile</a>
+
+            </div>
+        </div>    
+    </div>
+</section>
+       
+{% endblock %}
+
+        
+        <!-- Bootstrap core JS-->
+        <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+         
+    </body>
+</html>

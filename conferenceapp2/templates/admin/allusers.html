@@ -1,0 +1,71 @@
+{% extends 'admin/layout.html'%}
+{% block pagecontent %}
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">All Users</h1>
+         
+      </div>
+
+      <table class="table table-striped">
+  <thead>   
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Fullname</th>
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Phone</th>
+      <th scope="col">State</th>
+      <th scope="col">Skill Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ users }}
+   {# {% for u in users %}
+    <tr>
+      <th scope="row">{{loop.index}}</th>
+      <td>{{u.user_fname}} {{u.user_lname}}</td>
+      <td>{{u.user_email}}</td>
+      <td>{{u.user_address}}</td>
+      <td>{{u.user_phone}}</td>
+      <td>State</td>
+      <td>Skill Level</td>
+    </tr>
+    {% endfor %} #}
+
+  {#  {% for x,y,z in users %}
+    <tr>
+      <th scope="row">{{loop.index}}</th>
+      <td>{{x.user_fname}} {{x.user_lname}}</td>
+      <td>{{x.user_email}}</td>
+      <td>{{x.user_address}}</td>
+      <td>{{x.user_phone}}</td>
+      <td>{{y.state_name}}</td>
+      <td>{{z.skill_name}}</td>
+    </tr>
+    {% endfor %} #}
+
+    {% for x in users %}
+    <tr>
+      <th scope="row">{{loop.index}}</th>
+      <td>{{x[0].user_fname}} {{x[0].user_lname}}</td>
+      <td>{{x[0].user_email}}</td>
+      <td>{{x[0].user_address}}</td>
+      <td>{{x[0].user_phone}}</td>
+      <td>{{x[1].state_name}}</td>
+      <td>{{x[2].skill_name}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+    </main>
+  </div>
+</div>
+
+
+    <script src="{{url_for('static', filename=('backend/assets/js/bootstrap.bundle.min.js'))}}"></script>
+
+    <script src="{{url_for('static', filename=('backend/assets/js/dashboard.js'))}}"></script>
+  </body>
+</html>
+{% endblock %}

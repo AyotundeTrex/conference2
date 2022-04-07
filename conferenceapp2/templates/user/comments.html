@@ -1,0 +1,71 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Post Comments</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="row">
+                <div class="col-8 mx-auto">
+                    <p><b>Post Title:</b> <span>{{ posts.p_title }}</span></p>
+                    <p><b>Post Desc:</b> <span>{{ posts.p_desc }}</span></p>
+                    <p><b>Posted By:</b> <span>{{ posts.duser.user_fname }} {{ posts.duser.user_lname }}</span></p>
+                    <p><b>Date:</b> <span>{{ posts.p_date }}</span></p>
+                 </div>
+            </div>
+
+            <h1 class="text-center">What others are saying</h1>
+            <div class="row">
+                <div class="col-8 mx-auto" id="mycomment">  
+                    {% for c in commentdeets %}
+                    <p>{{c.c_comment}}    <span>{{c.c_date}}</span></p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-8 mx-auto">
+                    <h1>Comment</h1>
+                    <textarea class="form-control" id="comment" name="comment"></textarea>
+                    <button class="btn btn-lg btn-primary mt-3" id="postbtn">Post</button>
+                    <input type="hidden" name="postid" value="{{posts.p_id}}" id="postid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script type="text/javascript">
+       $(document).ready(function() {
+           $("#postbtn").click(function() {
+                var comment = $("#comment").val()
+                var csrf = "{{ csrf_token() }}"
+                var postid = $("#postid").val()
+                date2send = {"comment":comment, "csrf_token":csrf, "postid":postid}
+               
+                $.ajax({
+                    url: "/post/comment",
+                    data: date2send,
+                    type: 'post',
+                    success: function(msg) {
+                        $("#mycomment").prepend("<div class='row'><div class='col-8 mx-auto'>"+msg+"</div></div>")
+                    },
+                    error: function(err) {
+                        console.log(err)
+                    }
+                })
+           })
+       })
+    </script>
+</body>
+</html>

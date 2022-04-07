@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Post Comments</title>
+</head>
+<body>
+    <form action="/submittrack" enctype="multipart/form-data" method="post">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <label for="">upload track image </label>
+        <input type="file" name="trackimage"> 
+  
+      
+        <label for="">upload track file</label>
+      <input type="file" name="track"> 
+
+
+        <label for="">track title</label>
+      <input type="text" name="tracktitle"> 
+
+      <label for="">track artist name</label>
+      <input type="text" name="trackartistname"> 
+
+      <button>upload</button>
+
+    
+
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% extends 'user/layout.html' %}
+{% block pagecontent %}
+
+<section class="page-section bg-light" style="min-height:90vh">
+    <div class="container-fluid">
+ <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div class="border-end bg-white" id="sidebar-wrapper">
+                 
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('userhome')}}">Dashboard</a>
+                     
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('edit_profile')}}">My Profile</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Payments</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('discussion')}}">Join Discussion</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/user/breakout">Break Out Session</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{url_for('logout')}}">Log Out</a>
+                </div>
+            </div>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                
+                <!-- Page content-->
+                <div class="container-fluid">
+                  {{userdeets}}
+                    <h1 class="mt-4">My Profile</h1>
+                    <p>Edit your profile by completing the form below.</p>
+
+ 
+                     
+                </div>
+
+                <div class="container">
+                                       <div class="row">
+<div class="col-10 offset-1">
+    <form class="row g-3" action="{{ url_for('user_update')}}" method="post">
+      <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">First Name</label>
+    <input type="text" name="fname" class="form-control" id="inputEmail4" value="{{userdeets.user_fname}}">
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">Last Name</label>
+    <input type="text" name="lname" class="form-control" id="inputPassword4" value="{{userdeets.user_lname}}">
+  </div>
+   
+   <div class="col-md-6"> 
+    <label for="inputState" class="form-label">Skill Level</label>
+    <select id="inputState" class="form-select" name="skill">
+      {% for a in all_levels %}
+      {% if a.skill_id == userdeets.user_skillid %}
+      <option value="{{ a.skill_id }}" selected>{{a.skill_name}}</option>
+      {% else %}
+      <option value="{{ a.skill_id }}">{{a.skill_name}}</option>
+      {%endif %}
+      {%endfor%}
+    </select>
+  </div>
+  <div class="col-6">
+    <label for="inputAddress2" class="form-label">Phone No</label>
+    <input type="text" class="form-control" name="phone" placeholder="Phone No" value="{{userdeets.user_phone}}">
+  </div>
+  <div class="col-md-6">
+    <label for="inputCity" class="form-label">Address</label>
+    <input type="text" class="form-control" name="address" id="inputCity" value="{{userdeets.user_address}}">
+  </div>
+  <div class="col-md-6">
+    <label for="inputState" class="form-label">State</label>
+    <select id="inputState" class="form-select" name="state">
+      {% for a in all_states %}
+      {% if a.state_id == userdeets.user_stateid %}
+      <option value="{{ a.state_id }}" selected>{{a.state_name}}</option>
+      {% else %}
+      <option value="{{ a.state_id }}">{{a.state_name}}</option>
+      {%endif %}
+      {%endfor%}
+    </select>
+  </div>
+   
+  
+  <div class="col-12 text-center">
+    <button type="submit" class="btn btn-outline-primary btn-lg">Update Details</button>
+  </div>
+</form>
+</div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </div>    
+    </div>
+</section>
+       
+{% endblock %}

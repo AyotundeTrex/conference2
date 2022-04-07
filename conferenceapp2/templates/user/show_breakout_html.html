@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Pay Breakout</title>
+</head>
+<body>
+    <div class="col-10 offset-1">
+        <h1 class="text-center">Breakouts</h1>
+        <form action="/user/confirm_breakout" method="post">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+            <div class="table-responsive">
+                <table class="table table-striped" width="80%">
+                <tr>
+                    <th>#</th>
+                    <th><input type="checkbox" id="selectall"></th>
+                    <th>Title</th>
+                    <th>Skill Level</th>
+                    <th>Amount</th>
+                    <th>Icon</th>
+                    <th>Action</th>
+                </tr>
+               {{deets}}
+             </table>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                   
+                        <button class="btn btn-outline-primary btn-lg">Pay Now</button>
+                   
+                </div>
+            </div>
+        </form>
+       
+    </div>
+</body>
+</html>

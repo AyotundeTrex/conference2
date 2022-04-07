@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Developers Conference 2022</title>
+        <!-- Font Awesome icons (free version)-->
+        <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:black !important;">
+            <div class="container">
+                <a class="navbar-brand" href="#page-top">
+                Distrupts 2022</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('home')}}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#portfolio">Sessions</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#hostels">Hostels</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#speakers">Speakers</a></li>
+                        <li class="nav-item"><a type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Contact Us
+                        </a></li>
+
+                        {% if session.get("loggedin") != None %}
+                            <li class="nav-item"><a class="nav-link" href="#">Hello {{ userdeets.user_fname}}</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout')}}">Logout</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('home')}}#login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('register')}}">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        {% block pagecontent %}
+
+        {% endblock pagecontent %}
+
+        
+
+        <!-- Footer-->
+        <footer class="footer py-4" style="background-color: #ffc800;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2021</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('submit_msg')}}" method="post" id="myform">
+                <div class="modal-body">
+                    
+                        <div class="row mb-2">
+                    
+                            <div class="col-12 mb-2">
+                                {{user_msg.fullname.label}}
+                                {{ user_msg.fullname(class_="form-control form-control-lg", placeholder="Your fullname")}}
+                            </div>
+                            <div class="col-12 mb-2">
+                                {{user_msg.email.label}}
+                              {{ user_msg.email(class_="form-control form-control-lg", placeholder="Your email")}}
+                            </div>
+                            <div class="col-12 mb-2">
+                                {{user_msg.msg.label}}
+                                {{ user_msg.msg(class_="form-control form-control-lg", placeholder="Your message")}}
+                              </div>
+                            <div class="col mt-2 d-grid">
+                              {{ user_msg.csrf_token() }}
+                              <button id="btnsend" type="button">Send</button>
+                            </div>
+                          </div> 
+                        </form>
+                </div>
+               
+              </div>
+            </div>
+       
+        
+        <!-- JQuery -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+        <!-- Bootstrap core JS-->
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#btnsend').click(function() {
+                    var email = $('#email').val()
+                    var fullname = $("#fullname").val()
+                    var message =  $('#msg').val()
+                    var csrf = "{{ csrf_token() }}"
+
+                    //Method 1- Construct data as json
+                    var tosend = {"fullname":fullname, "email":email, "msg":message, "csrf_token":csrf}
+
+                    //Method2: Construct data as a query string
+                    var tosend2 = "fullname="+fullname+"&email="+email+"&msg="+message+"&csrf_token="+csrf
+
+                    //Method 3: get all the form elements at once use $('myform').serialize() similar to method 2.
+                    var tosend3 = $('#myform').serialize()
+
+                    //Make Ajax request
+                    $.ajax({
+                        url:"{{ url_for('submit_msg')}}",
+                        type: 'get',
+                        data: tosend3,
+                        dataType: 'json',
+                        success: function(server_rsp) {
+                           // $(".modal-title").text(server_rsp)
+                            alert(server_rsp['id'])
+                            alert(server_rsp['msg'])
+                            $("#email").val('')
+                            $("#fullname").val('')
+                            $("#msg").val('')
+                            $('#btnsend').html('Send')
+                        },
+                        error: function(err) {
+                            console.log(err)
+                            $('#btnsend').html('Send')
+                        },
+                        beforeSend: function() {
+                            $('#btnsend').html('Please wait...')
+                            alert('we are sending your message now...')
+                        }
+                    })
+                })
+            })
+        </script>
+            
+    </body>
+</html>

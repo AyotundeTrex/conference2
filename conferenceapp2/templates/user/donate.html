@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Font Awesome icons (free version)-->
+     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+       
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <title>Help a Brother</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8 mx-auto">
+                <h1>Donate Here</h1>
+                <form action="/donate" method="post">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    <div class="mb-3">
+                        <label for="fullname" class="form-label">Fullname</label>
+                        <input type="text" class="form-control" name="fname" id="fname" placeholder="">
+                      </div>
+                      <div class="mb-3">
+                          <label for="email" class="form-label">Email</label>
+                          <input type="email" class="form-control" name="email" id="email" placeholder="">
+                      </div>
+                      <div class="mb-3">
+                          <label for="amount" class="form-label">Amount</label>
+                          <input type="txt" class="form-control" name="amt" id="amt" placeholder="">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Donate</button>
+                </form>        
+            </div>
+        </div>
+    </div>
+
+    <!-- JQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script type="text/javascript">
+         $(document).ready(function() {
+             $("#state").change(function(){
+                 var stateid = $(this).val()
+                 var csrf = "{{csrf_token()}}"
+                 data2send = {"stateid":stateid, "csrf_token":csrf}
+
+                 $.ajax({
+                     url:"/demo/lga",
+                     data: data2send,
+                     type: 'post',
+                     success: function(msg) {
+                        $('#lga').html(msg)
+                     }
+                 })
+             })
+        })
+    </script>
+</body>
+</html>
